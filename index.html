@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning Gap Detection System</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        /* Card layout */
+        .card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        /* Upload form */
+        .upload-box {
+            text-align: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Risk badges */
+        .High {
+            color: white;
+            background-color: #e74c3c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .Medium {
+            color: white;
+            background-color: #f39c12;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .Low {
+            color: white;
+            background-color: #2ecc71;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        ul {
+            padding-left: 20px;
+            text-align: left;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Intelligent Learning Gap Detection</h1>
+
+<div class="card upload-box">
+    <h2>Upload Student Marks CSV</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <br>
+        <button type="submit">Analyze</button>
+    </form>
+</div>
+
+{% if error %}
+<p class="error">{{ error }}</p>
+{% endif %}
+
+{% if students %}
+<div class="card">
+    <h2>Student Risk Dashboard</h2>
+
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Average</th>
+            <th>Learning Gaps</th>
+            <th>Risk</th>
+            <th>Suggestions</th>
+        </tr>
+
+        {% for s in students %}
+        <tr>
+            <td>{{ s.Student }}</td>
+            <td>{{ s.Average }}</td>
+            <td>{{ s.Gaps if s.Gaps else "None" }}</td>
+            <td><span class="{{ s.Risk }}">{{ s.Risk }}</span></td>
+            <td>
+                <ul>
+                    {% for tip in s.Suggestions %}
+                    <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+
+</body>
+</html>
